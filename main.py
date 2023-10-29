@@ -55,18 +55,17 @@ news = news_response.json()['articles']
 client = Client(ACCT_SID, AUTH_TOKEN)
 
 # Check if stock increased/decreased by 5%
-if abs(stock_price_delta) > 5:
+if abs(stock_price_delta) < 5:
     if stock_price_delta > 0:
         symbol = "🔺"
     else:
         symbol = "🔻"
 
     for i in range(3):
-        content = f"""
-                TSLA: {symbol}{int(stock_price_delta)}
-                Headline: {news[i]['title']}
-                Brief: {news[i]['content']}
-            """
+        content = (f"{COMPANY_NAME}: {symbol}{int(stock_price_delta)}\n"
+                   f"Headline: {news[i]['title']}\n"
+                   f"Brief: {news[i]['content']}\n")
+        print(content)
 
         message = client.messages.create(
             from_=DEMO_PHONE,
